@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Circle } from "lucide-react";
 
 import { mainMenu, secondaryMenu, type MenuItem } from "@/config/menu";
 import { cn } from "@/lib/utils";
@@ -33,10 +33,10 @@ function MenuSection({
   onNavigate?: () => void;
 }) {
   return (
-    <div className="space-y-1">
+    <div className="space-y-0.5">
       {items.map((item) => {
         const active = isActive(pathname, item.href);
-        const childActive = item.children?.some((child) => isActive(pathname, child.href));
+        const childActive = item.children?.some((c) => isActive(pathname, c.href));
         const Icon = item.icon;
 
         if (item.children?.length) {
@@ -44,30 +44,53 @@ function MenuSection({
             <Collapsible key={item.title} defaultOpen={childActive}>
               <CollapsibleTrigger
                 className={cn(
-                  "flex h-10 w-full items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
-                  childActive && "bg-secondary text-foreground",
+                  "group flex h-10 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium",
+                  "text-muted-foreground transition-colors duration-150",
+                  "hover:bg-secondary hover:text-foreground",
+                  childActive && "bg-secondary/80 text-foreground",
                 )}
               >
-                <Icon className="size-4" />
-                <span className="min-w-0 flex-1 text-left">{item.title}</span>
-                <ChevronDown className="size-4 transition-transform data-[state=open]:rotate-180" />
+                <Icon className="size-4 shrink-0" />
+                <span className="min-w-0 flex-1 truncate text-left">{item.title}</span>
+                {item.badge && (
+                  <Badge variant="outline" className="h-5 px-1.5 text-[10px]">
+                    {item.badge}
+                  </Badge>
+                )}
+                <ChevronDown className="size-3.5 shrink-0 text-muted-foreground/60 transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
-              <CollapsibleContent className="mt-1 space-y-1 pl-7">
-                {item.children.map((child) => (
-                  <Link
-                    key={child.href}
-                    href={child.href}
-                    onClick={onNavigate}
-                    className={cn(
-                      "flex h-9 items-center gap-2 rounded-md px-3 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
-                      isActive(pathname, child.href) && "bg-primary/10 text-primary dark:bg-primary/15",
-                    )}
-                  >
-                    <span className="size-1.5 rounded-full bg-current opacity-60" />
-                    <span className="min-w-0 flex-1 truncate">{child.title}</span>
-                    {child.badge ? <Badge variant="secondary">{child.badge}</Badge> : null}
-                  </Link>
-                ))}
+              <CollapsibleContent className="mt-0.5 overflow-hidden data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-top-1 data-[state=open]:slide-in-from-top-1 data-[state=closed]:duration-150 data-[state=open]:duration-200">
+                <div className="ml-3 space-y-0.5 border-l border-border/60 pl-4 py-1">
+                  {item.children.map((child) => {
+                    const childIsActive = isActive(pathname, child.href);
+                    return (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={onNavigate}
+                        className={cn(
+                          "flex h-8 items-center gap-2.5 rounded-md px-3 text-sm",
+                          "text-muted-foreground transition-colors duration-150",
+                          "hover:bg-secondary hover:text-foreground",
+                          childIsActive && "bg-primary/10 font-medium text-primary dark:bg-primary/20",
+                        )}
+                      >
+                        <Circle
+                          className={cn(
+                            "size-1.5 shrink-0 fill-current",
+                            childIsActive ? "text-primary" : "text-muted-foreground/40"
+                          )}
+                        />
+                        <span className="min-w-0 flex-1 truncate">{child.title}</span>
+                        {child.badge && (
+                          <Badge variant="secondary" className="h-5 px-1.5 text-[10px]">
+                            {child.badge}
+                          </Badge>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
               </CollapsibleContent>
             </Collapsible>
           );
@@ -80,18 +103,31 @@ function MenuSection({
                 href={item.href ?? "#"}
                 onClick={onNavigate}
                 className={cn(
-                  "flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
-                  active && "bg-primary text-primary-foreground shadow-sm hover:bg-primary hover:text-primary-foreground",
+                  "flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium",
+                  "text-muted-foreground transition-colors duration-150",
+                  "hover:bg-secondary hover:text-foreground",
+                  active && [
+                    "bg-primary text-primary-foreground",
+                    "shadow-sm shadow-primary/30",
+                    "hover:bg-primary hover:text-primary-foreground",
+                  ],
                 )}
               >
-                <Icon className="size-4" />
+                <Icon className="size-4 shrink-0" />
                 <span className="min-w-0 flex-1 truncate">{item.title}</span>
-                {item.badge ? (
-                  <Badge variant={active ? "secondary" : "outline"}>{item.badge}</Badge>
-                ) : null}
+                {item.badge && (
+                  <Badge
+                    variant={active ? "secondary" : "outline"}
+                    className="h-5 px-1.5 text-[10px]"
+                  >
+                    {item.badge}
+                  </Badge>
+                )}
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">{item.title}</TooltipContent>
+            <TooltipContent side="right" className="text-xs">
+              {item.title}
+            </TooltipContent>
           </Tooltip>
         );
       })}
@@ -103,53 +139,71 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <TooltipProvider delayDuration={250}>
+    <TooltipProvider delayDuration={300}>
       <aside
         className={cn(
-          "flex h-full w-72 shrink-0 flex-col border-r bg-background/95 backdrop-blur",
+          "flex h-full w-72 shrink-0 flex-col",
+          "border-r bg-card",
           className,
         )}
       >
+        {/* Logo */}
         <div className="flex h-16 items-center gap-3 px-5">
-          <div className="flex size-11 items-center justify-center rounded-lg bg-white p-1 shadow-sm ring-1 ring-border dark:bg-secondary">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-background p-1 shadow-sm ring-1 ring-border">
             <Image
               src="/logo-icon.png"
               alt="Hadid Beton"
-              width={42}
-              height={42}
-              className="size-10 object-contain"
+              width={36}
+              height={36}
+              className="size-9 object-contain"
             />
           </div>
           <div className="min-w-0">
             <Image
               src="/logo.png"
               alt="Hadid Beton"
-              width={138}
-              height={58}
+              width={130}
+              height={52}
               priority
-              className="h-8 w-auto object-contain dark:brightness-110"
+              className="h-7 w-auto object-contain dark:brightness-[1.15]"
             />
-            <p className="truncate text-xs text-muted-foreground">ERP boshqaruvi</p>
+            <p className="mt-0.5 truncate text-[11px] font-medium uppercase tracking-widest text-muted-foreground/70">
+              ERP Platform
+            </p>
           </div>
         </div>
+
         <Separator />
-        <ScrollArea className="flex-1 px-3 py-4">
+
+        {/* Nav */}
+        <ScrollArea className="flex-1 px-3 py-4 scrollbar-thin">
           <div className="space-y-6">
+            {/* Main navigation */}
             <MenuSection items={mainMenu} pathname={pathname} onNavigate={onNavigate} />
+
+            {/* Secondary navigation */}
             <div>
-              <p className="mb-2 px-3 text-xs font-semibold uppercase text-muted-foreground">
-                Ish maydoni
+              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+                Workspace
               </p>
               <MenuSection items={secondaryMenu} pathname={pathname} onNavigate={onNavigate} />
             </div>
           </div>
         </ScrollArea>
-        <div className="border-t p-4">
-          <div className="rounded-lg bg-secondary p-3">
-            <p className="text-sm font-medium">Oy yakuni</p>
-            <p className="mt-1 text-xs text-muted-foreground">84% hujjatlar solishtirildi</p>
-            <div className="mt-3 h-2 rounded-full bg-background">
-              <div className="h-2 w-[84%] rounded-full bg-accent" />
+
+        {/* Bottom status card */}
+        <div className="border-t p-3">
+          <div className="rounded-xl bg-primary/8 p-3.5 dark:bg-primary/12">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold text-foreground">May 2026</p>
+              <span className="text-[10px] font-medium text-primary">84%</span>
+            </div>
+            <p className="mt-0.5 text-[11px] text-muted-foreground">Month-end closing progress</p>
+            <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-border">
+              <div
+                className="h-full rounded-full bg-primary transition-all duration-500"
+                style={{ width: "84%" }}
+              />
             </div>
           </div>
         </div>

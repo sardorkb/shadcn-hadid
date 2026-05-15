@@ -4,48 +4,72 @@
 
 @layer base {
   :root {
-    --background: 45 18% 96%;
-    --foreground: 150 20% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 150 20% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 150 20% 10%;
-    --primary: 147 49% 16%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 138 9% 90%;
-    --secondary-foreground: 150 20% 10%;
-    --muted: 138 8% 90%;
-    --muted-foreground: 150 8% 38%;
-    --accent: 53 12% 58%;
-    --accent-foreground: 150 20% 10%;
-    --destructive: 0 84% 60%;
+    /* ── Derived from Hadid Beton logo ──────────────────────────────
+       Primary  : deep forest green  (#1C3A27 → shield body)
+       Accent   : silver-pewter      (#8E9BA4 → crown + border metal)
+       Background: clean off-white with faint green tint
+    ─────────────────────────────────────────────────────────────── */
+
+    --background:   148  8% 97%;      /* barely-green off-white  */
+    --foreground:   150 32%  9%;      /* near-black with green tint */
+
+    --card:           0  0% 100%;     /* pure white — pops off bg    */
+    --card-foreground: 150 32% 9%;
+
+    --popover:        0  0% 100%;
+    --popover-foreground: 150 32% 9%;
+
+    --primary:      148 52% 16%;      /* deep forest green — shield  */
+    --primary-foreground: 0 0% 99%;  /* white text on green         */
+
+    --secondary:    148 14% 93%;      /* very light green tint       */
+    --secondary-foreground: 150 28% 12%;
+
+    --muted:        148  8% 92%;
+    --muted-foreground: 150 12% 42%;
+
+    --accent:       210  9% 60%;      /* silver-pewter — crown metal */
+    --accent-foreground: 150 32% 9%;
+
+    --destructive:    0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 135 8% 82%;
-    --input: 135 8% 82%;
-    --ring: 147 49% 16%;
+
+    --border:       148  8% 88%;
+    --input:        148  8% 88%;
+    --ring:         148 52% 16%;
+
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 150 20% 6%;
-    --foreground: 45 12% 93%;
-    --card: 150 17% 9%;
-    --card-foreground: 45 12% 93%;
-    --popover: 150 17% 9%;
-    --popover-foreground: 45 12% 93%;
-    --primary: 145 45% 34%;
+    /* Deep night-forest dark mode — same logo family              */
+    --background:   150 30%  5%;      /* very dark forest            */
+    --foreground:    42 14% 93%;      /* warm cream text             */
+
+    --card:         150 24%  8%;      /* dark card surface           */
+    --card-foreground: 42 14% 93%;
+
+    --popover:      150 24%  8%;
+    --popover-foreground: 42 14% 93%;
+
+    --primary:      146 44% 36%;      /* mid-forest green (visible)  */
     --primary-foreground: 0 0% 100%;
-    --secondary: 150 9% 15%;
-    --secondary-foreground: 45 12% 93%;
-    --muted: 150 9% 15%;
-    --muted-foreground: 60 7% 70%;
-    --accent: 53 12% 62%;
-    --accent-foreground: 150 20% 6%;
-    --destructive: 0 72% 51%;
+
+    --secondary:    150 20% 12%;
+    --secondary-foreground: 42 12% 88%;
+
+    --muted:        150 20% 11%;
+    --muted-foreground: 150  7% 58%;
+
+    --accent:       210  8% 54%;      /* silver — same as light      */
+    --accent-foreground: 42 14% 93%;
+
+    --destructive:    0 70% 52%;
     --destructive-foreground: 0 0% 98%;
-    --border: 150 10% 21%;
-    --input: 150 10% 21%;
-    --ring: 145 45% 34%;
+
+    --border:       150 15% 18%;
+    --input:        150 15% 18%;
+    --ring:         146 44% 36%;
   }
 
   * {
@@ -55,16 +79,26 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family:
-      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      sans-serif;
+      Inter, ui-sans-serif, system-ui, -apple-system,
+      BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  /* Smoother focus rings */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 }
 
 @layer utilities {
-  .erp-grid {
-    background-image:
-      linear-gradient(hsl(var(--border) / 0.38) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.38) 1px, transparent 1px);
-    background-size: 32px 32px;
+  /* Subtle scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar { width: 5px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
   }
 }

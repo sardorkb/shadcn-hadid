@@ -1,8 +1,9 @@
-import * as React from "react";
+"use client";
+
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
-
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const Sheet = SheetPrimitive.Root;
@@ -16,7 +17,10 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-black/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]",
+      "data-[state=open]:animate-in data-[state=open]:fade-in-0",
+      "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
+      "data-[state=open]:duration-300 data-[state=closed]:duration-200",
       className,
     )}
     {...props}
@@ -26,21 +30,39 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(
-  "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out",
+  [
+    "fixed z-50 bg-card shadow-2xl",
+    "transition-all",
+    "data-[state=open]:animate-in data-[state=closed]:animate-out",
+    "data-[state=open]:duration-300 data-[state=closed]:duration-200",
+    "ease-[cubic-bezier(0.32,0.72,0,1)]", // iOS-style spring easing
+  ].join(" "),
   {
     variants: {
       side: {
-        top: "inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
-        bottom:
-          "inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
-        left: "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
-        right:
-          "inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
+        top: [
+          "inset-x-0 top-0 border-b",
+          "data-[state=open]:slide-in-from-top",
+          "data-[state=closed]:slide-out-to-top",
+        ].join(" "),
+        bottom: [
+          "inset-x-0 bottom-0 border-t",
+          "data-[state=open]:slide-in-from-bottom",
+          "data-[state=closed]:slide-out-to-bottom",
+        ].join(" "),
+        left: [
+          "inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
+          "data-[state=open]:slide-in-from-left",
+          "data-[state=closed]:slide-out-to-left",
+        ].join(" "),
+        right: [
+          "inset-y-0 right-0 h-full w-full border-l sm:max-w-[540px]",
+          "data-[state=open]:slide-in-from-right",
+          "data-[state=closed]:slide-out-to-right",
+        ].join(" "),
       },
     },
-    defaultVariants: {
-      side: "right",
-    },
+    defaultVariants: { side: "right" },
   },
 );
 
@@ -60,10 +82,6 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring">
-        <X className="size-4" />
-        <span className="sr-only">Close</span>
-      </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>
 ));
@@ -75,7 +93,10 @@ const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 SheetHeader.displayName = "SheetHeader";
 
 const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)} {...props} />
+  <div
+    className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)}
+    {...props}
+  />
 );
 SheetFooter.displayName = "SheetFooter";
 
