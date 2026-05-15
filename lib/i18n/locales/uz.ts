@@ -1,0 +1,37 @@
+import type { Translations } from "./en";
+
+export const uz: Translations = {
+  nav: {
+    dashboard: "Boshqaruv paneli",
+    customers: "Mijozlar",
+    orders: "Buyurtmalar",
+    production: "Ishlab chiqarish",
+    quality: "Sifat nazorati",
+    fleet: "Avtoparka va logistika",
+    inventory: "Ombor",
+    purchasing: "Ta'minot",
+    hr: "Kadrlar",
+    finance: "Moliya",
+    reports: "Hisobotlar",
+    settings: "Sozlamalar",
+  },
+  common: {
+    save: "Saqlash",
+    cancel: "Bekor qilish",
+    create: "Yaratish",
+    edit: "Tahrirlash",
+    delete: "O'chirish",
+    search: "Qidirish",
+    filter: "Filtr",
+    export: "Eksport",
+    loading: "Yuklanmoqda…",
+    noData: "Yozuvlar topilmadi.",
+    actions: "Amallar",
+    status: "Holat",
+    date: "Sana",
+    amount: "Summa",
+    name: "Nomi",
+  },
+  currency: "so'm",
+  units: { volume: "m³", weight: "kg", distance: "km" },
+};

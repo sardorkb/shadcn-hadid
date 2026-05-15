@@ -1,249 +1,170 @@
 import {
-  ArrowDownRight,
-  ArrowUpRight,
-  BadgeDollarSign,
-  Boxes,
-  CircleDollarSign,
-  Clock3,
-  PackageCheck,
+  AlertTriangle,
+  CheckCircle2,
+  ClipboardList,
+  Package,
   Receipt,
-  Route,
-  ShoppingCart,
-  TrendingUp,
-  UsersRound,
+  Truck,
+  Waves,
 } from "lucide-react";
-
+import { AreaChartCard } from "@/components/charts/area-chart-card";
+import { BarChartCard } from "@/components/charts/bar-chart-card";
+import { GaugeCard } from "@/components/charts/gauge-card";
+import { PageHeader } from "@/components/shared/page-header";
+import { SectionCard } from "@/components/shared/section-card";
+import { StatCard } from "@/components/shared/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { mockOrders } from "@/lib/mock-data/orders";
+import { mockTrucks } from "@/lib/mock-data/fleet";
+import { mockInventory } from "@/lib/mock-data/inventory";
+import { mockInvoices, mockRevenueData } from "@/lib/mock-data/finance";
 
-const kpis = [
-  {
-    label: "Sof tushum",
-    value: "23.4 mlrd so'm",
-    change: "+12.4%",
-    trend: "up",
-    icon: CircleDollarSign,
-  },
-  {
-    label: "Ochiq buyurtmalar",
-    value: "1,284",
-    change: "+7.8%",
-    trend: "up",
-    icon: ShoppingCart,
-  },
-  {
-    label: "Ombor qiymati",
-    value: "91.6 mlrd so'm",
-    change: "-2.1%",
-    trend: "down",
-    icon: Boxes,
-  },
-  {
-    label: "Yetkazish sifati",
-    value: "96.8%",
-    change: "+1.9%",
-    trend: "up",
-    icon: PackageCheck,
-  },
-];
-
-const revenueBars = [62, 78, 55, 88, 74, 91, 82, 96, 86, 100, 94, 108];
-
-const operations = [
-  { label: "Yuklash", value: "418", detail: "navbatdagi buyurtmalar", icon: PackageCheck },
-  { label: "Jo'natish", value: "136", detail: "rejalangan reyslar", icon: Route },
-  { label: "Debitor qarz", value: "5.3 mlrd", detail: "shu hafta muddati", icon: Receipt },
-  { label: "Tasdiqlar", value: "27", detail: "harakat kutilmoqda", icon: Clock3 },
-];
-
-const activity = [
-  ["SO-10482", "Toshkent Qurilish", "1.06 mlrd so'm", "Chiqarildi"],
-  ["PO-39218", "Bekobod Ta'minot", "398 mln so'm", "Ko'rib chiqish"],
-  ["INV-77842", "Hadid Beton", "250 mln so'm", "To'landi"],
-  ["TR-22109", "Markaziy ombor", "420 dona", "Yo'lda"],
-];
-
-const monthLabels = [
-  "Yan",
-  "Fev",
-  "Mar",
-  "Apr",
-  "May",
-  "Iyn",
-  "Iyl",
-  "Avg",
-  "Sen",
-  "Okt",
-  "Noy",
-  "Dek",
-];
+function fmt(n: number) {
+  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)} mlrd`;
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(0)} mln`;
+  return n.toLocaleString();
+}
 
 export default function DashboardPage() {
+  const todayOrders = mockOrders.filter((o) => o.scheduledAt.startsWith("2026-05-15"));
+  const todayM3 = todayOrders.reduce((s, o) => s + o.volumeM3, 0);
+  const pendingOrders = mockOrders.filter((o) =>
+    ["draft", "confirmed", "in-production"].includes(o.status)
+  ).length;
+  const activeDeliveries = mockTrucks.filter((t) => t.status === "en-route").length;
+  const overdueInvoices = mockInvoices.filter((i) => i.status === "overdue");
+  const outstandingReceivables = overdueInvoices.reduce(
+    (s, i) => s + (i.amount - i.paidAmount),
+    0
+  );
+  const lowStockItems = mockInventory.filter((i) => i.currentStock < i.minStock);
+
+  const revenueChartData = mockRevenueData.map((d) => ({
+    month: d.month.slice(0, 3),
+    "Revenue (mln)": Math.round(d.revenue / 1_000_000),
+    "Volume (m³)": d.volume,
+  }));
+
+  const volumeByGrade = [
+    { grade: "M150", m3: 14 },
+    { grade: "M200", m3: 68 },
+    { grade: "M250", m3: 42 },
+    { grade: "M300", m3: 96 },
+    { grade: "M350", m3: 60 },
+    { grade: "M400", m3: 48 },
+  ];
+
+  const recentActivity = [
+    { id: "ORD-2026-001", desc: "24 m³ M300 → Yunusobod", status: "In Production", icon: Package },
+    { id: "ORD-2026-003", desc: "12 m³ M200 → Samarqand", status: "Delivering", icon: Truck },
+    { id: "ORD-2026-005", desc: "30 m³ M250 → Angren", status: "Delivered", icon: CheckCircle2 },
+    { id: "INV-2025-089", desc: "Yunusobod — overdue 135 days", status: "Overdue", icon: AlertTriangle },
+  ];
+
   return (
     <div className="space-y-6">
-      <section className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <Badge variant="outline" className="mb-3 bg-background">
-            Korxona boshqaruvi
-          </Badge>
-          <h1 className="text-3xl font-semibold tracking-normal">Boshqaruv paneli</h1>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Bugungi ish jarayoni uchun moliya, ombor, sotuv va logistika ko'rsatkichlari.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="outline">Eksport</Button>
-          <Button>
-            <TrendingUp className="size-4" />
-            Prognoz
-          </Button>
-        </div>
-      </section>
+      <PageHeader
+        badge="Operations Overview"
+        title="Dashboard"
+        description="Live view of Hadid Beton production, deliveries, and financials."
+        actions={
+          <>
+            <Button variant="outline">Export</Button>
+            <Button>New Order</Button>
+          </>
+        }
+      />
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {kpis.map((kpi) => {
-          const Icon = kpi.icon;
-          const up = kpi.trend === "up";
-          return (
-            <Card key={kpi.label} className="shadow-soft">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{kpi.label}</CardTitle>
-                <div className="rounded-md bg-secondary p-2">
-                  <Icon className="size-4 text-primary" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-semibold">{kpi.value}</div>
-                <div className="mt-2 flex items-center gap-1 text-sm">
-                  {up ? (
-                    <ArrowUpRight className="size-4 text-emerald-600" />
-                  ) : (
-                    <ArrowDownRight className="size-4 text-amber-600" />
-                  )}
-                  <span className={up ? "text-emerald-600" : "text-amber-600"}>{kpi.change}</span>
-                  <span className="text-muted-foreground">o'tgan oyga nisbatan</span>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+        <StatCard label="Today's Volume" value={`${todayM3} m³`} change="+8% vs yesterday" trend="up" icon={Waves} />
+        <StatCard label="Active Deliveries" value={String(activeDeliveries)} change={`${pendingOrders} orders pending`} trend="neutral" icon={Truck} />
+        <StatCard label="Pending Orders" value={String(pendingOrders)} change="3 due today" trend="neutral" icon={ClipboardList} />
+        <StatCard
+          label="Overdue Receivables"
+          value={`${fmt(outstandingReceivables)} so'm`}
+          change={`${overdueInvoices.length} invoice${overdueInvoices.length !== 1 ? "s" : ""}`}
+          trend="down"
+          icon={Receipt}
+        />
       </section>
 
       <section className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
-        <Card className="shadow-soft">
-          <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <CardTitle>Tushum dinamikasi</CardTitle>
-              <CardDescription>Hadid Beton bo'yicha oylik tan olingan tushum</CardDescription>
-            </div>
-            <Badge variant="success">Barqaror oqim</Badge>
-          </CardHeader>
-          <CardContent>
-            <div className="flex h-72 items-end gap-3 rounded-md border bg-secondary/35 p-4">
-              {revenueBars.map((height, index) => (
-                <div key={index} className="flex flex-1 flex-col items-center gap-2">
-                  <div
-                    className="w-full rounded-t-md bg-primary shadow-sm"
-                    style={{ height: `${height * 1.9}px` }}
-                  />
-                  <span className="text-xs text-muted-foreground">
-                    {monthLabels[index]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-soft">
-          <CardHeader>
-            <CardTitle>Ish navbati</CardTitle>
-            <CardDescription>Bo'limlar bo'yicha ustuvor vazifalar</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {operations.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.label} className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-md bg-secondary">
-                    <Icon className="size-4 text-primary" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">{item.label}</p>
-                    <p className="text-xs text-muted-foreground">{item.detail}</p>
-                  </div>
-                  <p className="text-sm font-semibold">{item.value}</p>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
+        <AreaChartCard
+          title="Monthly Revenue"
+          description="Recognized revenue — Hadid Beton (all plants)"
+          data={revenueChartData}
+          xKey="month"
+          yKey="Revenue (mln)"
+          yLabel="mln so'm"
+          headerExtra={<Badge variant="success">Active season</Badge>}
+        />
+        <GaugeCard
+          title="Toshkent Plant Utilization"
+          description="Today's scheduled vs capacity"
+          value={72}
+          unit="%"
+        />
       </section>
 
       <section className="grid gap-4 xl:grid-cols-[1fr_1fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>So'nggi harakatlar</CardTitle>
-            <CardDescription>Operatsion holatga ta'sir qilgan tranzaksiyalar</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {activity.map(([id, company, amount, status]) => (
-                <div key={id} className="flex items-center justify-between gap-4">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium">{id}</p>
-                    <p className="truncate text-xs text-muted-foreground">{company}</p>
+        <BarChartCard
+          title="Volume by Mix Grade"
+          description="May 2026 — m³ produced per grade"
+          data={volumeByGrade}
+          xKey="grade"
+          bars={[{ key: "m3", label: "Volume (m³)" }]}
+        />
+        <SectionCard title="Recent Activity" description="Last updates across all modules">
+          <div className="space-y-4">
+            {recentActivity.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.id} className="flex items-center gap-3">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-secondary">
+                    <Icon className="size-4 text-primary" />
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold">{amount}</p>
-                    <p className="text-xs text-muted-foreground">{status}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">{item.id}</p>
+                    <p className="truncate text-xs text-muted-foreground">{item.desc}</p>
                   </div>
+                  <Badge
+                    variant={
+                      item.status === "Delivered" || item.status === "Paid"
+                        ? "success"
+                        : item.status === "Overdue"
+                        ? "destructive"
+                        : "secondary"
+                    }
+                    className="shrink-0 text-xs"
+                  >
+                    {item.status}
+                  </Badge>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Pul aylanishi</CardTitle>
-            <CardDescription>Yo'nalishlar bo'yicha aylanma kapital holati</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                ["Debitor qarz", "42 kun", "72%"],
-                ["Kreditor qarz", "31 kun", "55%"],
-                ["Ombor", "24 kun", "46%"],
-                ["Naqd zaxira", "30.4 mlrd so'm", "81%"],
-              ].map(([label, value, width]) => (
-                <div key={label}>
-                  <div className="mb-2 flex items-center justify-between text-sm">
-                    <span>{label}</span>
-                    <span className="font-medium">{value}</span>
-                  </div>
-                  <div className="h-2 rounded-full bg-secondary">
-                    <div className="h-2 rounded-full bg-accent" style={{ width }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Separator className="my-5" />
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium">Moliyaviy zaxira</p>
-                <p className="text-xs text-muted-foreground">90 kunlik operatsion reja asosida</p>
-              </div>
-              <Badge variant="success">
-                <BadgeDollarSign className="mr-1 size-3.5" />
-                9.8 oy
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
+              );
+            })}
+          </div>
+        </SectionCard>
       </section>
+
+      {lowStockItems.length > 0 && (
+        <SectionCard
+          title="Low Stock Alerts"
+          description="Materials below minimum threshold"
+          headerExtra={<Badge variant="destructive">{lowStockItems.length} items</Badge>}
+        >
+          <div className="space-y-2">
+            {lowStockItems.map((item) => (
+              <div key={item.id} className="flex items-center justify-between rounded-md bg-destructive/5 px-3 py-2 text-sm">
+                <span className="font-medium">{item.name}</span>
+                <span className="text-destructive">
+                  {item.currentStock} {item.unit} / min {item.minStock} {item.unit}
+                </span>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
     </div>
   );
 }

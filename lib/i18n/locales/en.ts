@@ -1,0 +1,37 @@
+export const en = {
+  nav: {
+    dashboard: "Dashboard",
+    customers: "Customers",
+    orders: "Orders",
+    production: "Production",
+    quality: "Quality Control",
+    fleet: "Fleet & Logistics",
+    inventory: "Inventory",
+    purchasing: "Purchasing",
+    hr: "Human Resources",
+    finance: "Finance",
+    reports: "Reports",
+    settings: "Settings",
+  },
+  common: {
+    save: "Save",
+    cancel: "Cancel",
+    create: "Create",
+    edit: "Edit",
+    delete: "Delete",
+    search: "Search",
+    filter: "Filter",
+    export: "Export",
+    loading: "Loading…",
+    noData: "No records found.",
+    actions: "Actions",
+    status: "Status",
+    date: "Date",
+    amount: "Amount",
+    name: "Name",
+  },
+  currency: "UZS",
+  units: { volume: "m³", weight: "kg", distance: "km" },
+};
+
+export type Translations = typeof en;

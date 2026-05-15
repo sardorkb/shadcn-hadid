@@ -1,0 +1,37 @@
+import type { Translations } from "./en";
+
+export const ru: Translations = {
+  nav: {
+    dashboard: "Панель управления",
+    customers: "Клиенты",
+    orders: "Заказы",
+    production: "Производство",
+    quality: "Контроль качества",
+    fleet: "Автопарк и логистика",
+    inventory: "Склад",
+    purchasing: "Закупки",
+    hr: "Управление персоналом",
+    finance: "Финансы",
+    reports: "Отчёты",
+    settings: "Настройки",
+  },
+  common: {
+    save: "Сохранить",
+    cancel: "Отмена",
+    create: "Создать",
+    edit: "Редактировать",
+    delete: "Удалить",
+    search: "Поиск",
+    filter: "Фильтр",
+    export: "Экспорт",
+    loading: "Загрузка…",
+    noData: "Записи не найдены.",
+    actions: "Действия",
+    status: "Статус",
+    date: "Дата",
+    amount: "Сумма",
+    name: "Название",
+  },
+  currency: "UZS",
+  units: { volume: "м³", weight: "кг", distance: "км" },
+};

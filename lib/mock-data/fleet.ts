@@ -1,0 +1,62 @@
+import type { DeliveryTicket, Truck } from "@/lib/schemas/fleet";
+
+export const mockTrucks: Truck[] = [
+  { id: "tr-001", plate: "01 A 234 BA", type: "mixer", capacityM3: 8, driverName: "Hamza Yusupov", driverPhone: "+998 90 111 22 33", status: "en-route", plantId: "tashkent", yearMade: 2019 },
+  { id: "tr-002", plate: "01 B 567 CA", type: "mixer", capacityM3: 8, driverName: "Sherzod Toshev", driverPhone: "+998 90 222 33 44", status: "loading", plantId: "tashkent", yearMade: 2020 },
+  { id: "tr-003", plate: "01 A 891 DA", type: "mixer", capacityM3: 6, driverName: "Oybek Nazarov", driverPhone: "+998 90 333 44 55", status: "idle", plantId: "tashkent", yearMade: 2018 },
+  { id: "tr-004", plate: "01 C 123 EA", type: "mixer", capacityM3: 10, driverName: "Eldor Raxmatov", driverPhone: "+998 93 444 55 66", status: "returning", plantId: "tashkent", yearMade: 2021 },
+  { id: "tr-005", plate: "01 D 456 FA", type: "mixer", capacityM3: 8, driverName: "Rahim Umarov", driverPhone: "+998 94 555 66 77", status: "maintenance", plantId: "tashkent", yearMade: 2017, notes: "Drum bearing replacement" },
+  { id: "tr-006", plate: "01 E 789 GA", type: "pump", capacityM3: 0, driverName: "Sanjar Mirzaev", driverPhone: "+998 91 666 77 88", status: "en-route", plantId: "tashkent", yearMade: 2020 },
+  { id: "tr-007", plate: "06 A 321 AA", type: "mixer", capacityM3: 8, driverName: "Javlon Xoliqov", driverPhone: "+998 90 777 88 99", status: "idle", plantId: "angren", yearMade: 2019 },
+  { id: "tr-008", plate: "06 B 654 BA", type: "mixer", capacityM3: 6, driverName: "Bahodir Qodirov", driverPhone: "+998 93 888 99 00", status: "en-route", plantId: "angren", yearMade: 2020 },
+  { id: "tr-009", plate: "06 C 987 CA", type: "pump", capacityM3: 0, driverName: "Sardor Tillayev", driverPhone: "+998 94 000 11 22", status: "idle", plantId: "angren", yearMade: 2021 },
+];
+
+export const mockDeliveryTickets: DeliveryTicket[] = [
+  {
+    id: "DT-001",
+    orderId: "ORD-2026-001",
+    truckId: "tr-001",
+    truckPlate: "01 A 234 BA",
+    driverName: "Hamza Yusupov",
+    batchId: "BATCH-001",
+    volumeM3: 8,
+    loadedAt: "2026-05-15T07:50:00",
+    departedAt: "2026-05-15T08:00:00",
+    status: "en-route",
+  },
+  {
+    id: "DT-002",
+    orderId: "ORD-2026-001",
+    truckId: "tr-002",
+    truckPlate: "01 B 567 CA",
+    driverName: "Sherzod Toshev",
+    volumeM3: 8,
+    status: "loading",
+  },
+  {
+    id: "DT-003",
+    orderId: "ORD-2026-003",
+    truckId: "tr-008",
+    truckPlate: "06 B 654 BA",
+    driverName: "Bahodir Qodirov",
+    volumeM3: 6,
+    loadedAt: "2026-05-15T12:50:00",
+    departedAt: "2026-05-15T13:00:00",
+    status: "en-route",
+  },
+  {
+    id: "DT-004",
+    orderId: "ORD-2026-005",
+    truckId: "tr-007",
+    truckPlate: "06 A 321 AA",
+    driverName: "Javlon Xoliqov",
+    volumeM3: 8,
+    loadedAt: "2026-05-15T08:50:00",
+    departedAt: "2026-05-15T09:00:00",
+    arrivedAt: "2026-05-15T09:45:00",
+    unloadedAt: "2026-05-15T10:15:00",
+    returnedAt: "2026-05-15T10:55:00",
+    status: "returned",
+  },
+];

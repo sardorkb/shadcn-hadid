@@ -1,20 +1,19 @@
 import type { LucideIcon } from "lucide-react";
 import {
   BarChart3,
-  Boxes,
   Building2,
-  ClipboardList,
-  CreditCard,
+  ClipboardCheck,
+  Coins,
+  Container,
+  Factory,
   FileText,
   Gauge,
-  Headphones,
-  PackageSearch,
-  ReceiptText,
   Settings,
   ShoppingCart,
   Truck,
+  UserRound,
   Users,
-  WalletCards,
+  Warehouse,
 } from "lucide-react";
 
 export type MenuChild = {
@@ -33,58 +32,84 @@ export type MenuItem = {
 
 export const mainMenu: MenuItem[] = [
   {
-    title: "Boshqaruv paneli",
+    title: "Dashboard",
     href: "/dashboard",
     icon: Gauge,
   },
   {
-    title: "Sotuvlar",
+    title: "Customers",
+    href: "/customers",
+    icon: Building2,
+  },
+  {
+    title: "Orders",
+    href: "/orders",
     icon: ShoppingCart,
+    badge: "3",
+  },
+  {
+    title: "Production",
+    icon: Factory,
     children: [
-      { title: "Buyurtmalar", href: "/sales/orders", badge: "18" },
-      { title: "Hisob-fakturalar", href: "/sales/invoices" },
-      { title: "Mijozlar", href: "/sales/customers" },
+      { title: "Schedule", href: "/production" },
+      { title: "Mix Designs", href: "/production/mix-designs" },
+      { title: "Batch Tickets", href: "/production/batches" },
     ],
   },
   {
-    title: "Ombor",
-    icon: Boxes,
-    children: [
-      { title: "Qoldiq nazorati", href: "/inventory/stock" },
-      { title: "Mahsulotlar", href: "/inventory/products" },
-      { title: "Ko'chirishlar", href: "/inventory/transfers" },
-    ],
+    title: "Quality Control",
+    href: "/quality",
+    icon: ClipboardCheck,
   },
   {
-    title: "Ta'minot",
-    href: "/procurement",
-    icon: PackageSearch,
-    badge: "4",
-  },
-  {
-    title: "Logistika",
-    href: "/logistics",
+    title: "Fleet & Logistics",
     icon: Truck,
+    children: [
+      { title: "Trucks", href: "/fleet" },
+      { title: "Delivery Tickets", href: "/fleet/deliveries" },
+    ],
   },
   {
-    title: "Moliya",
-    icon: WalletCards,
+    title: "Inventory",
+    icon: Warehouse,
     children: [
-      { title: "Bosh daftar", href: "/finance/ledger" },
-      { title: "To'lovlar", href: "/finance/payments" },
-      { title: "Soliq hisobotlari", href: "/finance/tax" },
+      { title: "Stock", href: "/inventory" },
+      { title: "Movements", href: "/inventory/movements" },
     ],
+  },
+  {
+    title: "Purchasing",
+    icon: Container,
+    children: [
+      { title: "Suppliers", href: "/purchasing" },
+      { title: "Purchase Orders", href: "/purchasing/orders" },
+    ],
+  },
+  {
+    title: "HR",
+    href: "/hr",
+    icon: UserRound,
+  },
+  {
+    title: "Finance",
+    icon: Coins,
+    children: [
+      { title: "Invoices", href: "/finance" },
+      { title: "Payments", href: "/finance/payments" },
+    ],
+  },
+  {
+    title: "Reports",
+    href: "/reports",
+    icon: BarChart3,
+  },
+  {
+    title: "Settings",
+    href: "/settings",
+    icon: Settings,
   },
 ];
 
 export const secondaryMenu: MenuItem[] = [
-  { title: "Tahlil", href: "/analytics", icon: BarChart3 },
-  { title: "Hujjatlar", href: "/documents", icon: FileText },
-  { title: "Tasdiqlar", href: "/approvals", icon: ClipboardList, badge: "7" },
-  { title: "Hamkorlar", href: "/partners", icon: Building2 },
-  { title: "Hisoblar", href: "/accounts", icon: CreditCard },
-  { title: "Jamoa", href: "/teams", icon: Users },
-  { title: "Yordam", href: "/support", icon: Headphones },
-  { title: "Sozlamalar", href: "/settings", icon: Settings },
-  { title: "Audit jurnali", href: "/audit", icon: ReceiptText },
+  { title: "Documentation", href: "/docs", icon: FileText },
 ];
