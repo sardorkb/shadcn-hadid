@@ -9,7 +9,7 @@ import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#1C3A27" },
-    { media: "(prefers-color-scheme: dark)",  color: "#0d1f14" },
+    { media: "(prefers-color-scheme: dark)",  color: "#141618" },
   ],
   width: "device-width",
   initialScale: 1,

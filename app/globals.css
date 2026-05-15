@@ -42,34 +42,34 @@
   }
 
   .dark {
-    /* Deep night-forest dark mode — same logo family              */
-    --background:   150 30%  5%;      /* very dark forest            */
-    --foreground:    42 14% 93%;      /* warm cream text             */
+    /* Neutral charcoal night — no green tint, clean dark UI       */
+    --background:   220  9%  9%;      /* near-black charcoal         */
+    --foreground:   210 14% 93%;      /* cool off-white text         */
 
-    --card:         150 24%  8%;      /* dark card surface           */
-    --card-foreground: 42 14% 93%;
+    --card:         220  8% 13%;      /* slightly lighter card       */
+    --card-foreground: 210 14% 93%;
 
-    --popover:      150 24%  8%;
-    --popover-foreground: 42 14% 93%;
+    --popover:      220  8% 13%;
+    --popover-foreground: 210 14% 93%;
 
-    --primary:      146 44% 36%;      /* mid-forest green (visible)  */
+    --primary:      148 44% 36%;      /* keep brand green for actions */
     --primary-foreground: 0 0% 100%;
 
-    --secondary:    150 20% 12%;
-    --secondary-foreground: 42 12% 88%;
+    --secondary:    220  7% 18%;      /* dark neutral surface        */
+    --secondary-foreground: 210 10% 82%;
 
-    --muted:        150 20% 11%;
-    --muted-foreground: 150  7% 58%;
+    --muted:        220  7% 16%;
+    --muted-foreground: 220  7% 54%;
 
-    --accent:       210  8% 54%;      /* silver — same as light      */
-    --accent-foreground: 42 14% 93%;
+    --accent:       215  8% 50%;      /* cool silver                 */
+    --accent-foreground: 210 14% 93%;
 
     --destructive:    0 70% 52%;
     --destructive-foreground: 0 0% 98%;
 
-    --border:       150 15% 18%;
-    --input:        150 15% 18%;
-    --ring:         146 44% 36%;
+    --border:       220  7% 20%;
+    --input:        220  7% 20%;
+    --ring:         148 44% 36%;
   }
 
   * {
