@@ -39,7 +39,6 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Administration"
         title="Settings"
         description="Company profile, plants, users, mix design library, and system preferences."
         actions={

@@ -84,7 +84,6 @@ export default function FinancePage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Finance"
         title="Invoices"
         description="Track issued invoices, payments received, and aging receivables."
         actions={

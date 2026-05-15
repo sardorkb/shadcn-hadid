@@ -65,7 +65,6 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Operations Overview"
         title="Dashboard"
         description="Live view of Hadid Beton production, deliveries, and financials."
         actions={

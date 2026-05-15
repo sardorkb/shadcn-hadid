@@ -1,24 +1,20 @@
 "use client";
 
-import Image from "next/image";
-import { useTheme } from "next-themes";
 import {
   Bell,
   Building,
   CalendarDays,
-  Check,
   ChevronDown,
   LogOut,
   Menu,
-  Moon,
   Search,
   Settings,
-  Sun,
   UserRound,
 } from "lucide-react";
 import * as React from "react";
 
 import { AppSidebar } from "@/components/layout/AppSidebar";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -49,7 +45,6 @@ const currentUser = {
 
 export function TopHeader() {
   const [open, setOpen] = React.useState(false);
-  const { setTheme, theme } = useTheme();
   const [notifCount] = React.useState(3);
 
   return (
@@ -135,28 +130,7 @@ export function TopHeader() {
           </Tooltip>
 
           {/* Theme toggle */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="size-9 rounded-full" aria-label="Theme">
-                <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                <Sun className="size-4" /> Light
-                {theme === "light" && <Check className="ml-auto size-4" />}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                <Moon className="size-4" /> Dark
-                {theme === "dark" && <Check className="ml-auto size-4" />}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                <UserRound className="size-4" /> System
-                {theme === "system" && <Check className="ml-auto size-4" />}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ThemeToggle />
 
           <Separator orientation="vertical" className="mx-1 hidden h-6 sm:block" />
 

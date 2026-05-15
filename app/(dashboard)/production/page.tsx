@@ -31,7 +31,6 @@ export default function ProductionPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Production"
         title="Daily Schedule"
         description="Today's batching schedule, mix designs, and plant utilization."
         actions={

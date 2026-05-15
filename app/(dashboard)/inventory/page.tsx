@@ -82,7 +82,6 @@ export default function InventoryPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Warehouse"
         title="Inventory"
         description="Raw material stock levels, reorder alerts, and valuation."
         actions={

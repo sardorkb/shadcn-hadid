@@ -109,7 +109,6 @@ export default function OrdersPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Sales"
         title="Orders"
         description="Manage concrete orders from quotation through delivery and invoicing."
         actions={

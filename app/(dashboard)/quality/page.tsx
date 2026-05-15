@@ -74,7 +74,6 @@ export default function QualityPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Quality Control"
         title="Lab Samples"
         description="Slump tests, 7-day and 28-day compressive strength tracking per batch."
         actions={

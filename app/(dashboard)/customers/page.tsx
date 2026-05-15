@@ -208,7 +208,6 @@ export default function CustomersPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="CRM"
         title="Customers"
         description="Manage customer profiles, credit limits, and account balances."
         actions={

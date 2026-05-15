@@ -42,7 +42,6 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Analytics"
         title="Reports"
         description="Business intelligence across production, sales, fleet, and finance."
         actions={

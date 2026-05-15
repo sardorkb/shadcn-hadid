@@ -83,7 +83,6 @@ export default function HRPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Human Resources"
         title="Employees"
         description="Staff directory, roles, plant assignments, and payroll data."
         actions={

@@ -80,7 +80,6 @@ export default function FleetPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Fleet & Logistics"
         title="Fleet"
         description="Monitor mixer and pump trucks, driver assignments, and real-time status."
         actions={

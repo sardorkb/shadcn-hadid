@@ -211,7 +211,6 @@ export default function DocsPage() {
       {/* Content */}
       <div className="min-w-0 flex-1 space-y-10">
         <PageHeader
-          badge="Developer Reference"
           title="Component Library"
           description="All shared components used across Hadid Beton ERP. Click the Code tab to copy usage."
         />
@@ -263,7 +262,6 @@ export default function MyModulePage() {
           description="Standard page title block with optional badge label and action slot on the right."
           preview={
             <PageHeader
-              badge="Module label"
               title="Page Title"
               description="A short description of this page's purpose for the user."
               actions={

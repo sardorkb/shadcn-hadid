@@ -77,7 +77,6 @@ export default function PurchasingPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        badge="Procurement"
         title="Suppliers & Purchasing"
         description="Manage raw material suppliers, purchase orders, and payables."
         actions={

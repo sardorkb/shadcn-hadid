@@ -159,14 +159,9 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             />
           </div>
           <div className="min-w-0">
-            <Image
-              src="/logo.png"
-              alt="Hadid Beton"
-              width={130}
-              height={52}
-              priority
-              className="h-7 w-auto object-contain dark:brightness-[1.15]"
-            />
+            <p className="truncate text-base font-bold leading-tight tracking-wide text-foreground">
+              HADID BETON
+            </p>
             <p className="mt-0.5 truncate text-[11px] font-medium uppercase tracking-widest text-muted-foreground/70">
               ERP Platform
             </p>
