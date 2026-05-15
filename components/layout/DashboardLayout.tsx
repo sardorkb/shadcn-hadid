@@ -16,22 +16,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Desktop sidebar — slides in/out */}
-      <div
-        className={cn(
-          "fixed inset-y-0 left-0 z-40 hidden lg:block",
-          "transition-transform duration-300 ease-in-out",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full",
-        )}
-      >
-        <AppSidebar />
+      {/* Desktop sidebar */}
+      <div className="fixed inset-y-0 left-0 z-40 hidden lg:block">
+        <AppSidebar collapsed={!sidebarOpen} />
       </div>
 
-      {/* Main area — expands when sidebar hides */}
+      {/* Main area — padding matches sidebar width */}
       <div
         className={cn(
-          "transition-all duration-300 ease-in-out",
-          sidebarOpen ? "lg:pl-72" : "lg:pl-0",
+          "transition-[padding-left] duration-300 ease-in-out",
+          sidebarOpen ? "lg:pl-72" : "lg:pl-16",
         )}
       >
         <TopHeader

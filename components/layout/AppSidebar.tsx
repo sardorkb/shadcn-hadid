@@ -10,12 +10,12 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type AppSidebarProps = {
   className?: string;
   onNavigate?: () => void;
+  collapsed?: boolean;
 };
 
 function isActive(pathname: string, href?: string) {
@@ -23,6 +23,7 @@ function isActive(pathname: string, href?: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+/* ── Expanded menu section ───────────────────────────────────────── */
 function MenuSection({
   items,
   pathname,
@@ -135,64 +136,120 @@ function MenuSection({
   );
 }
 
-export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
+/* ── Collapsed icon rail ─────────────────────────────────────────── */
+function IconRail({ pathname }: { pathname: string }) {
+  const allItems = [...mainMenu, ...secondaryMenu];
+  return (
+    <ScrollArea className="flex-1 py-3 scrollbar-thin">
+      <div className="flex flex-col items-center gap-1 px-2">
+        {allItems.map((item) => {
+          const Icon = item.icon;
+          const active =
+            isActive(pathname, item.href) ||
+            item.children?.some((c) => isActive(pathname, c.href));
+          const href = item.href ?? item.children?.[0]?.href ?? "#";
+          return (
+            <Tooltip key={item.title}>
+              <TooltipTrigger asChild>
+                <Link
+                  href={href}
+                  className={cn(
+                    "flex size-10 items-center justify-center rounded-lg",
+                    "text-muted-foreground transition-colors duration-150",
+                    "hover:bg-secondary hover:text-foreground",
+                    active && "bg-primary text-primary-foreground shadow-sm shadow-primary/30",
+                  )}
+                >
+                  <Icon className="size-4 shrink-0" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs">
+                {item.title}
+              </TooltipContent>
+            </Tooltip>
+          );
+        })}
+      </div>
+    </ScrollArea>
+  );
+}
+
+/* ── AppSidebar ──────────────────────────────────────────────────── */
+export function AppSidebar({ className, onNavigate, collapsed }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delayDuration={100}>
       <aside
         className={cn(
-          "flex h-full w-72 shrink-0 flex-col",
-          "border-r bg-card",
+          "flex h-full shrink-0 flex-col border-r bg-card",
+          collapsed ? "w-16" : "w-72",
           className,
         )}
       >
-        {/* Logo */}
-        <div className="flex h-16 items-center px-5">
-          <Image
-            src="/logo.png"
-            alt="Hadid Beton"
-            width={160}
-            height={64}
-            priority
-            className="h-9 w-auto object-contain dark:brightness-[1.2]"
-          />
+        {/* Logo — h-16 with border-b to align with TopHeader's border-b */}
+        <div
+          className={cn(
+            "flex h-16 shrink-0 items-center border-b border-border",
+            collapsed ? "justify-center" : "px-5",
+          )}
+        >
+          {collapsed ? (
+            <Image
+              src="/logo-icon.png"
+              alt="Hadid Beton"
+              width={32}
+              height={32}
+              priority
+              className="size-8 object-contain"
+            />
+          ) : (
+            <Image
+              src="/logo.png"
+              alt="Hadid Beton"
+              width={160}
+              height={64}
+              priority
+              className="h-9 w-auto object-contain dark:brightness-[1.2]"
+            />
+          )}
         </div>
-
-        <Separator />
 
         {/* Nav */}
-        <ScrollArea className="flex-1 px-3 py-4 scrollbar-thin">
-          <div className="space-y-6">
-            {/* Main navigation */}
-            <MenuSection items={mainMenu} pathname={pathname} onNavigate={onNavigate} />
+        {collapsed ? (
+          <IconRail pathname={pathname} />
+        ) : (
+          <ScrollArea className="flex-1 px-3 py-4 scrollbar-thin">
+            <div className="space-y-6">
+              <MenuSection items={mainMenu} pathname={pathname} onNavigate={onNavigate} />
+              <div>
+                <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+                  Workspace
+                </p>
+                <MenuSection items={secondaryMenu} pathname={pathname} onNavigate={onNavigate} />
+              </div>
+            </div>
+          </ScrollArea>
+        )}
 
-            {/* Secondary navigation */}
-            <div>
-              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
-                Workspace
-              </p>
-              <MenuSection items={secondaryMenu} pathname={pathname} onNavigate={onNavigate} />
+        {/* Bottom status card — hidden when collapsed */}
+        {!collapsed && (
+          <div className="border-t p-3">
+            <div className="rounded-xl bg-primary/8 p-3.5 dark:bg-primary/12">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold text-foreground">May 2026</p>
+                <span className="text-[10px] font-medium text-primary">84%</span>
+              </div>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">Month-end closing progress</p>
+              <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-border">
+                <div
+                  className="h-full rounded-full bg-primary transition-all duration-500"
+                  style={{ width: "84%" }}
+                />
+              </div>
             </div>
           </div>
-        </ScrollArea>
-
-        {/* Bottom status card */}
-        <div className="border-t p-3">
-          <div className="rounded-xl bg-primary/8 p-3.5 dark:bg-primary/12">
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold text-foreground">May 2026</p>
-              <span className="text-[10px] font-medium text-primary">84%</span>
-            </div>
-            <p className="mt-0.5 text-[11px] text-muted-foreground">Month-end closing progress</p>
-            <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-border">
-              <div
-                className="h-full rounded-full bg-primary transition-all duration-500"
-                style={{ width: "84%" }}
-              />
-            </div>
-          </div>
-        </div>
+        )}
       </aside>
     </TooltipProvider>
   );

@@ -61,7 +61,7 @@ export function TopHeader({ sidebarOpen, onToggleSidebar }: TopHeaderProps) {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b bg-card/95 px-4 shadow-sm backdrop-blur-md lg:px-6">
+      <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-card px-4 lg:px-6">
 
         {/* ── Mobile hamburger ─────────────────────────────────── */}
         <Sheet open={open} onOpenChange={setOpen}>
