@@ -4,19 +4,23 @@ import {
   Bell,
   Building,
   CalendarDays,
+  Check,
   ChevronDown,
   LogOut,
   Menu,
+  Monitor,
+  Moon,
   PanelLeftClose,
   PanelLeftOpen,
   Search,
   Settings,
+  Sun,
   UserRound,
 } from "lucide-react";
 import * as React from "react";
+import { useTheme } from "next-themes";
 
 import { AppSidebar } from "@/components/layout/AppSidebar";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -53,6 +57,7 @@ type TopHeaderProps = {
 export function TopHeader({ sidebarOpen, onToggleSidebar }: TopHeaderProps) {
   const [open, setOpen] = React.useState(false);
   const [notifCount] = React.useState(3);
+  const { theme, setTheme } = useTheme();
 
   return (
     <TooltipProvider delayDuration={200}>
@@ -155,7 +160,28 @@ export function TopHeader({ sidebarOpen, onToggleSidebar }: TopHeaderProps) {
           </Tooltip>
 
           {/* Theme toggle */}
-          <ThemeToggle />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="relative size-9 rounded-full" aria-label="Theme">
+                <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-36">
+              <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2">
+                <Sun className="size-4" /> Light
+                {theme === "light" && <Check className="ml-auto size-3.5" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2">
+                <Moon className="size-4" /> Dark
+                {theme === "dark" && <Check className="ml-auto size-3.5" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("system")} className="gap-2">
+                <Monitor className="size-4" /> System
+                {theme === "system" && <Check className="ml-auto size-3.5" />}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Separator orientation="vertical" className="mx-1 hidden h-6 sm:block" />
 
