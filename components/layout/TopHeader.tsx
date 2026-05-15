@@ -7,6 +7,8 @@ import {
   ChevronDown,
   LogOut,
   Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
   Search,
   Settings,
   UserRound,
@@ -43,7 +45,12 @@ const currentUser = {
   avatarUrl: "", // replace with real URL when available
 };
 
-export function TopHeader() {
+type TopHeaderProps = {
+  sidebarOpen?: boolean;
+  onToggleSidebar?: () => void;
+};
+
+export function TopHeader({ sidebarOpen, onToggleSidebar }: TopHeaderProps) {
   const [open, setOpen] = React.useState(false);
   const [notifCount] = React.useState(3);
 
@@ -63,6 +70,24 @@ export function TopHeader() {
             <AppSidebar onNavigate={() => setOpen(false)} />
           </SheetContent>
         </Sheet>
+
+        {/* ── Desktop sidebar toggle ───────────────────────────── */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden size-9 rounded-full lg:flex"
+              onClick={onToggleSidebar}
+              aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            >
+              {sidebarOpen
+                ? <PanelLeftClose className="size-4" />
+                : <PanelLeftOpen className="size-4" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>{sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}</TooltipContent>
+        </Tooltip>
 
         {/* ── Company / plant selector ─────────────────────────── */}
         <div className="hidden items-center gap-2 rounded-lg border bg-background px-3 py-2 shadow-sm md:flex">

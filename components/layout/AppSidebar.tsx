@@ -148,21 +148,38 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
         )}
       >
         {/* Logo */}
-        <div className="flex h-16 items-center gap-3 px-5">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-background p-1 shadow-sm ring-1 ring-border">
-            <Image
-              src="/logo-icon.png"
-              alt="Hadid Beton"
-              width={36}
-              height={36}
-              className="size-9 object-contain"
-            />
+        <div className="relative flex h-[4.5rem] items-center gap-3.5 overflow-hidden px-4">
+          {/* gradient wash */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent" />
+          {/* decorative arc */}
+          <div className="pointer-events-none absolute -right-8 -top-8 size-32 rounded-full bg-primary/8" />
+
+          {/* Icon with primary bg + glow */}
+          <div className="relative shrink-0">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/40">
+              <Image
+                src="/logo-icon.png"
+                alt="Hadid Beton"
+                width={30}
+                height={30}
+                priority
+                className="size-[1.7rem] object-contain brightness-[8] saturate-0"
+              />
+            </div>
+            {/* Live pulse dot */}
+            <span className="absolute -right-0.5 -top-0.5 flex size-2.5">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500 ring-[1.5px] ring-card" />
+            </span>
           </div>
-          <div className="min-w-0">
-            <p className="truncate text-base font-bold leading-tight tracking-wide text-foreground">
-              HADID BETON
-            </p>
-            <p className="mt-0.5 truncate text-[11px] font-medium uppercase tracking-widest text-muted-foreground/70">
+
+          {/* Name */}
+          <div className="relative min-w-0">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[15px] font-black tracking-tight text-foreground">HADID</span>
+              <span className="text-[15px] font-extralight tracking-[0.18em] text-foreground/60">BETON</span>
+            </div>
+            <p className="mt-0.5 text-[9.5px] font-semibold uppercase tracking-[0.28em] text-primary">
               ERP Platform
             </p>
           </div>
