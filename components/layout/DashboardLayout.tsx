@@ -15,8 +15,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
       <div className="lg:pl-72">
         <TopHeader />
-        <main className="erp-grid min-h-[calc(100vh-4rem)]">
-          <div className="mx-auto w-full max-w-7xl px-4 py-6 lg:px-6">{children}</div>
+        <main className="min-h-[calc(100vh-4rem)] bg-background">
+          <div className="w-full px-6 py-6 lg:px-8">{children}</div>
         </main>
       </div>
     </div>

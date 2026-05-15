@@ -111,5 +111,5 @@ export const mainMenu: MenuItem[] = [
 ];
 
 export const secondaryMenu: MenuItem[] = [
-  { title: "Documentation", href: "/docs", icon: FileText },
+  { title: "Component Docs", href: "/docs", icon: FileText },
 ];
